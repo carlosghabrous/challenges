@@ -56,8 +56,7 @@ class PlantixApiClient(object):
 
         self._visit_connections(connections, visited, ranked_topics)
 
-        #TODO: sort ranked_topics
-        return ranked_topics
+        return ranked_topics.most_common()[:n]
 
     def _visit_connections(self, connections: str, visited: dict, ranked_topics: Counter):
         for connection in connections:  
