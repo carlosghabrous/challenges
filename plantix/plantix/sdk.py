@@ -51,26 +51,19 @@ class PlantixApiClient(object):
         response = self.get(start)
         topics, connections = response.topics, response.following
 
-        visited = set({response.uid})
+        visited = dict({response.uid:True})
         ranked_topics = Counter(topics)
-        print(f'before anything; visited: {visited}; ranked_topics: {ranked_topics}')
 
         self._visit_connections(connections, visited, ranked_topics)
 
         #TODO: sort ranked_topics
         return ranked_topics
 
-    def _visit_connections(self, connections: str, visited: set, ranked_topics: Counter):
-        for connection in connections: 
-            if connection in visited:
-                print(f'Already visited node: {connection}')
-                continue 
-
-            visited.add(connection)
-            print(f'visited updated to: {visited}')
-            response = self.get(connection)
-            print(f'got following response: {response}')
-            ranked_topics.update(response.topics)
-            print(f'ranked_topics updated to: {ranked_topics}')
-            self._visit_connections(response.following, visited, ranked_topics)
+    def _visit_connections(self, connections: str, visited: dict, ranked_topics: Counter):
+        for connection in connections:  
+            if not visited.get(connection, 0):
+                visited.update({connection:True})
+                response = self.get(connection)
+                ranked_topics.update(response.topics)
+                self._visit_connections(response.following, visited, ranked_topics)
 
