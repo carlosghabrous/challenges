@@ -1,0 +1,32 @@
+3
+Brain atlas data is stored as a 'voxel -> value' mapping.
+I.e., the space is split along the axes into small parts ('voxels' - the 3D
+equivalent of 'pixel') and each voxel is assigned a value.
+
+For example, for 3-D space, if the voxel dimensions (ie: the length of the
+sides of the voxel) are (25, 25, 25) micron, and the space origin (ie: offset)
+is at (100, 200, 300), then all the points within the bounding box with 
+lower corner (100, 200, 300) and upper corner (125, 225, 325) belongs to voxel (0, 0, 0).
+In other words, the coordinate (x, y, z) = (110, 210, 310) in 'real space' would map to the voxel (0, 0, 0).
+
+Given the space origin, voxel dimensions, and N-d array of voxel values
+`data`, design a class `Annotation` which supports at least two methods in
+addition to __init__():
+
+class Annotation:
+    def __init__(self, data, voxel_dimensions, origin):
+        pass  # implementation here
+
+    def lookup(coordinate):
+        """ Return voxel value corresponding to point `coordinate`.
+
+        Coordinate: x, y, z position in 'real space'
+        """
+        pass  # implementation here
+
+    def count(values):
+        """ Count the number of voxel with value from `values` (could be a scalar or list/tuple/set/numpy array)
+        pass  # implementation here
+
+
+save your solution in 3.py

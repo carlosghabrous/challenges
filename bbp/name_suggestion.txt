@@ -1,0 +1,44 @@
+Actually, there seems to be more than one relevant delimiter.
+First, I am assuming that the four sections of the file name (dend, axon, Scale and Clone)
+are optional. 
+
+Second, I would choose a unique delimiter to separate data between sections. Right now, it seems to 
+be the role of '-', but this character can also be present on identifiers, for instance this
+'dend' identifier C270999B-P2. 
+
+Let's choose a unique identtifier that should never be part of dendrites or axons identifiers. 
+And then let's surround the different relevant data with it. For instance, assuming '#' is valid, this:
+
+    dend-C180298A-P2_axon-C190898A-P2_-_Scale_x1.000_y1.025_z1.000_-_Clone_11
+
+would become: 
+    dend#C180298A-P2_#axon-C190898A-P2_#_Scale_x1.000_y1.025_z1.000_#_Clone_11
+
+Third, there seems to be characters that are not used. For instance, the '_' before the 'Scale' part 
+and after the 'axon' part in the previous file name: 'right_#_Scale_'.
+In principle, they could go away. 
+
+Then (from previous step):
+    dend#C180298A-P2_#axon-C190898A-P2_#_Scale_x1.000_y1.025_z1.000_#_Clone_11
+
+would become: 
+    dend#C180298A-P2#axon-C190898A-P2#Scale_x1.000_y1.025_z1.000#Clone_11
+
+Forth, the fact that sections can be optional makes things more difficult. I would explicitely 
+include them in the file name, leaving the 'data' part blank if necessary. 
+For instance, this:
+    dend-Fluo42_right_axon-Fluo42_right_-_Scale_x1.000_y1.050_z1.000
+
+would become:
+    dend#Fluo42_right#axon#Fluo42_right#Scale#x1.000_y1.050_z1.000#Clone#
+    (notice there is nothing after 'Clone')
+
+And finally, the fact that two sections can have the same value makes things more difficult too. 
+I would repeat the value, in detriment of having a longer file name. 
+For instance, this: 
+    C080300B2_-_Scale_x1.000_y1.050_z1.000_-_Clone_21
+
+would become: 
+    dend#C080300B2#axon#C080300B2#Scale_x1.000_y1.050_z1.000#Clone_21
+
+

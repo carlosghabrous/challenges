@@ -1,0 +1,17 @@
+---
+log_file_path: /Users/ghab/Documents/exasol
+server: 18.202.148.130
+ports:
+  - 3335
+  - 8082
+  - 8445
+  - 49154
+  - 3480
+  - 65533
+timeout_s:
+  - cmd_pow: 7200
+  - cmd: 6
+certificate: data/_private/cert
+private_key: data/_private/id_rsa
+#TODO: include data to send to Exasol's server (name, country, skype etc)
+  

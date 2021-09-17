@@ -1,0 +1,17 @@
+2
+
+    Often we are given code that has lived in someone's home directory or
+    repository for a long time.  Integrating this code into a library then
+    involves guiding them through the process of making their intentions
+    clear.
+
+    Please perform a review on the code in two.py.
+
+    Put your comments inline, starting with '##'.  An example comment is right
+    after the docstring.
+
+    Please save the file as two_code_review.py with your comments
+
+    Please do not change the code.
+
+    Note: Completely understanding it is *not* required (that would be in a later pass)
