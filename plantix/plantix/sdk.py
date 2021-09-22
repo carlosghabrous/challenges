@@ -48,9 +48,23 @@ class PlantixApiClient(object):
         return PlantExpert(uid, topics, following)
 
     def find_topics(self, start: str, n: int) -> List:
+        '''Returns a sorted list of the n most frequent topics 
+        for user uid=start and her/his connections
+
+        Args:
+            start (str): User's uid
+            n (int): Number of topics to return, sorted by frequency in decreasing order
+
+        Returns:
+            List: n first tuples of a list containing the topic and number of references to each topic
+        '''
+
         response = self.get(start)
         topics, connections = response.topics, response.following
 
+        # If the response is successful, let's create these structures to keep track 
+        # of the connections already examined (visited dictionary), and the topics found along 
+        # with their occurrence number across users (ranked_topics Counter)
         visited = dict({response.uid:True})
         ranked_topics = Counter(topics)
 
@@ -58,11 +72,21 @@ class PlantixApiClient(object):
 
         return ranked_topics.most_common()[:n]
 
-    def _visit_connections(self, connections: str, visited: dict, ranked_topics: Counter):
+    def _visit_connections(self, connections: List, visited: dict, ranked_topics: Counter) -> None:
+        '''Visits all connections for the initial user, recording their topics
+
+        This method interprets the users connected as a graph, and uses something similar to 
+        a depth first search algorithm to visit all nodes of interest. 
+
+        Args:
+            connections (List): List of strings, each item representing a user connected to the 'start' user
+            visited (dict): Dictionary used as a set, containing the users that have already been visited
+            ranked_topics (Counter): Keeps track of the topics found and their occurrences
+        '''
         for connection in connections:  
             if not visited.get(connection, 0):
-                visited.update({connection:True})
                 response = self.get(connection)
                 ranked_topics.update(response.topics)
+                visited.update({connection:True})
                 self._visit_connections(response.following, visited, ranked_topics)
 
