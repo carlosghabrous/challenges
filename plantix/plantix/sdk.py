@@ -90,3 +90,28 @@ class PlantixApiClient(object):
                 visited.update({connection:True})
                 self._visit_connections(response.following, visited, ranked_topics)
 
+
+    def find_topics_iter(self, start: str, n: int) -> List:
+        visited = dict()
+        ranked_topics = Counter()
+        stack = list(start)
+
+        while stack: 
+            node = stack.pop()
+            response = self.get(node)
+            ranked_topics.update(response.topics)
+            visited.update({node:True})
+
+            for connection in response.following: 
+                if not visited.get(connection, 0):
+                    stack.append(connection)
+
+            print(f'visited {node}, ranked_topics {ranked_topics}, updated stack to {stack}')
+
+        return ranked_topics.most_common()[:n]
+
+
+
+
+
+
